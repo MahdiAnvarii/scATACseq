@@ -1,0 +1,6 @@
+install.packages("Signac")
+install.packages("EnsDb.Hsapiens.v75")
+library(Signac)
+library(EnsDb.Hsapiens.v75)
+library(Seurat)
+library(tidyverse)
