@@ -1,4 +1,6 @@
 # scATACseq
+ Pipeline:  
+ https://stuartlab.org/signac/articles/pbmc_vignette  
  The Raw data:  
  https://cf.10xgenomics.com/samples/cell-atac/1.0.1/atac_v1_pbmc_10k/atac_v1_pbmc_10k_filtered_peak_bc_matrix.h5  
  The Metadata:  
