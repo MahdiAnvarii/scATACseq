@@ -42,3 +42,16 @@ annotations
 seqlevels(annotations) <- paste0("chr", seqlevels(annotations))
 Annotation(Seurat_obj) <- annotations
 Seurat_obj@assays$ATAC@annotation
+
+# QC
+# 1.Nucleosome signal and nucleosme binding pattern
+# 2.TSS enrichment score
+# 3.Total number of fragments in peaks
+# 4.Fraction of fragments in peaks
+# 5.Ratio reads in genomic blacklist regions
+Seurat_obj <- NucleosomeSignal(Seurat_obj)
+Seurat_obj <- TSSEnrichment(object = Seurat_obj, fast = F)
+Seurat_obj$blacklist_ratio <- Seurat_obj$blacklist_region_fragments / Seurat_obj$peak_region_fragments
+Seurat_obj$pct_reads_in_peaks <- Seurat_obj$peak_region_fragments / Seurat_obj$passed_filters * 100
+
+view(Seurat_obj@meta.data)
