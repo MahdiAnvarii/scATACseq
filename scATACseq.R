@@ -1,9 +1,12 @@
 install.packages("Signac")
 install.packages("EnsDb.Hsapiens.v75")
+install.packages("biovizBase")
+BiocManager::install("biovizBase")
 library(Signac)
 library(EnsDb.Hsapiens.v75)
 library(Seurat)
 library(tidyverse)
+library(biovizBase)
 
 # Reading data
 fragments_file <- read.delim('../Data/atac_v1_pbmc_10k_fragments.tsv.gz', header = F, nrows = 10)
@@ -32,3 +35,10 @@ Seurat_obj <- CreateSeuratObject(
 )
 
 str(Seurat_obj)
+
+# Adding gene annotations
+annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Hsapiens.v75)
+annotations
+seqlevels(annotations) <- paste0("chr", seqlevels(annotations))
+Annotation(Seurat_obj) <- annotations
+Seurat_obj@assays$ATAC@annotation
