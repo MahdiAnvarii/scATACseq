@@ -62,3 +62,8 @@ ggsave("DS_nCount_TSS.pdf", plot = DS1, device = "pdf", height = 7, width = 10)
 
 DS2 <- DensityScatter(Seurat_obj, x='nucleosome_signal', y='TSS.enrichment' , quantiles = T, log_x = T)
 ggsave("DS_signal_TSS.pdf", plot = DS2, device = "pdf", height = 7, width = 10)
+
+vln <- VlnPlot(Seurat_obj,
+        features = c('nCount_ATAC', 'nFeature_ATAC' ,'TSS.enrichment','nucleosome_signal' , 'blacklist_ratio','pct_reads_in_peaks'),
+        pt.size = 0.1, ncol = 6)
+ggsave("vln_plot.pdf", plot = vln, device = "pdf", height = 7, width = 14)
