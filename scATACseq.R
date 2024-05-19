@@ -67,3 +67,33 @@ vln <- VlnPlot(Seurat_obj,
         features = c('nCount_ATAC', 'nFeature_ATAC' ,'TSS.enrichment','nucleosome_signal' , 'blacklist_ratio','pct_reads_in_peaks'),
         pt.size = 0.1, ncol = 6)
 ggsave("vln_plot.pdf", plot = vln, device = "pdf", height = 7, width = 14)
+
+# Filtering
+dim(Seurat_obj)
+Seurat_obj <- subset(x = Seurat_obj, 
+                     subset = nCount_ATAC > 3000
+                     & nCount_ATAC < 30000
+                     & pct_reads_in_peaks > 15 
+                     & nucleosome_signal < 4
+                     & TSS.enrichment > 3
+                     & blacklist_ratio < 0.05)
+dim(Seurat_obj)
+
+### Preprocess workflow
+# Normalization
+Seurat_obj <- RunTFIDF(Seurat_obj)
+
+# Collect highly variable features
+Seurat_obj <- FindTopFeatures(Seurat_obj, min.cutoff = 'q0')
+
+# Linear dimensionality reduction
+Seurat_obj <- RunSVD(Seurat_obj)
+depth_cor <- DepthCor(Seurat_obj)
+ggsave("DepthCor_plot.pdf", plot = depth_cor, device = "pdf", height = 7, width = 12)
+
+# Non-Linear
+Seurat_obj <- RunUMAP(Seurat_obj , dims = 2:30 , reduction = 'lsi')
+Seurat_obj <- FindNeighbors(Seurat_obj , dims = 2:30 , reduction = 'lsi')
+Seurat_obj <- FindClusters(Seurat_obj , algorithm = 3)
+dimplot1 <- DimPlot(Seurat_obj, label = T) + NoLegend()
+ggsave("clusters_dim_plot.pdf", plot = dimplot1, device = "pdf", width = 16 , height = 10)
