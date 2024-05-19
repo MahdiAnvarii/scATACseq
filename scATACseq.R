@@ -55,3 +55,10 @@ Seurat_obj$blacklist_ratio <- Seurat_obj$blacklist_region_fragments / Seurat_obj
 Seurat_obj$pct_reads_in_peaks <- Seurat_obj$peak_region_fragments / Seurat_obj$passed_filters * 100
 
 view(Seurat_obj@meta.data)
+colnames(Seurat_obj@meta.data)
+
+DS1 <- DensityScatter(Seurat_obj, x='nCount_ATAC', y='TSS.enrichment' , quantiles = T, log_x = T)
+ggsave("DS_nCount_TSS.pdf", plot = DS1, device = "pdf", height = 7, width = 10)
+
+DS2 <- DensityScatter(Seurat_obj, x='nucleosome_signal', y='TSS.enrichment' , quantiles = T, log_x = T)
+ggsave("DS_signal_TSS.pdf", plot = DS2, device = "pdf", height = 7, width = 10)
